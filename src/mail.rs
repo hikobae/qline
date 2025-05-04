@@ -1,6 +1,6 @@
 use std::io::BufRead;
 
-const QUOTE_MARK: &'static str = ">";
+const QUOTE_MARK: &str = ">";
 
 pub fn quote<T: BufRead>(reader: T) {
     for line in reader.lines() {
