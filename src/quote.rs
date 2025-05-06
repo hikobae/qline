@@ -2,7 +2,7 @@ use std::fs;
 use std::io;
 use std::process;
 
-const QUOTE_MARK: &str = ">";
+const QUOTE_MARK: char = '>';
 
 trait ResultExt<T> {
     fn unwrap_or_exit<U: io::Write>(self, stderr: &mut U);
@@ -64,6 +64,8 @@ fn quote_line(line: &str) -> String {
 
     if line.is_empty() || is_whitespaces(line) {
         QUOTE_MARK.to_string()
+    } else if line.chars().next().unwrap() == QUOTE_MARK {
+        format!("{}{}", QUOTE_MARK, line)
     } else {
         format!("{} {}", QUOTE_MARK, line)
     }

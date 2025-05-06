@@ -13,6 +13,9 @@ fn quote_tests() {
     quote_test("a\nb\n", "> a\n> b\n");
     quote_test("a\n\nb", "> a\n>\n> b\n");
     quote_test("xyz\nabc", "> xyz\n> abc\n");
+    quote_test("> a", ">> a\n");
+    quote_test("> a\n>b", ">> a\n>>b\n");
+    quote_test("a\n> b", "> a\n>> b\n");
 }
 
 fn quote_test(input: &'static str, expected: &'static str) {
