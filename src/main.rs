@@ -8,7 +8,7 @@ fn main() {
     let mut stderr = io::BufWriter::new(io::stderr().lock());
     let args: Vec<String> = env::args().collect();
     if args.len() <= 1 {
-        quote::quote(io::stdin().lock(), &mut stdout);
+        quote::quote(io::stdin().lock(), &mut stdout, &mut stderr);
     } else {
         quote::quote_files(&args[1..], &mut stdout, &mut stderr);
     }
