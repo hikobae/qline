@@ -2,7 +2,7 @@ use std::fs;
 use std::io;
 use std::process;
 
-const QUOTE_MARK: char = '>';
+const QUOTE_MARK: &str = ">";
 const NEWLINE: &[u8] = b"\n";
 
 trait ResultExt<T> {
@@ -37,11 +37,7 @@ where
 {
     for line in reader.lines() {
         match line {
-            Ok(str) => {
-                let quoted = quote_line(&str);
-                stdout.write_all(quoted.as_bytes()).unwrap_or_exit(stderr);
-                stdout.write_all(NEWLINE).unwrap_or_exit(stderr);
-            }
+            Ok(str) => quote_line(&str, stdout, stderr),
             Err(error) => write_error(stderr, error),
         }
     }
@@ -60,14 +56,20 @@ where
     }
 }
 
-fn quote_line(line: &str) -> String {
-    let is_whitespaces = |line: &str| line.chars().all(|c| c == ' ');
+fn quote_line<T, U>(line: &str, stdout: &mut T, stderr: &mut U)
+where
+    T: io::Write,
+    U: io::Write,
+{
+    let is_whitespaces = |line: &str| line.is_empty() || line.chars().all(|c| c == ' ');
+    let mut write_all = |buf: &[u8]| stdout.write_all(buf).unwrap_or_exit(stderr);
 
-    if line.is_empty() || is_whitespaces(line) {
-        QUOTE_MARK.to_string()
-    } else if line.chars().next().unwrap() == QUOTE_MARK {
-        format!("{}{}", QUOTE_MARK, line)
-    } else {
-        format!("{} {}", QUOTE_MARK, line)
+    write_all(QUOTE_MARK.as_bytes());
+    if !is_whitespaces(line) {
+        if !line.starts_with(QUOTE_MARK) {
+            write_all(b" ");
+        }
+        write_all(line.as_bytes());
     }
+    write_all(NEWLINE);
 }
