@@ -3,6 +3,7 @@ use std::io;
 use std::process;
 
 const QUOTE_MARK: char = '>';
+const NEWLINE: &[u8] = b"\n";
 
 trait ResultExt<T> {
     fn unwrap_or_exit<U: io::Write>(self, stderr: &mut U);
@@ -39,7 +40,7 @@ where
             Ok(str) => {
                 let quoted = quote_line(&str);
                 stdout.write_all(quoted.as_bytes()).unwrap_or_exit(stderr);
-                stdout.write_all("\n".as_bytes()).unwrap_or_exit(stderr);
+                stdout.write_all(NEWLINE).unwrap_or_exit(stderr);
             }
             Err(error) => write_error(stderr, error),
         }
