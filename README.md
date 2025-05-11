@@ -1,6 +1,6 @@
-# qline
+# quote
 
-`qline` は, 標準入力またはファイルからのテキストをメール返信スタイルで引用（`>` を各行の先頭に付与）するシンプルな CUI ツールです.
+`quote` は, 標準入力またはファイルからのテキストをメール返信スタイルで引用（`>` を各行の先頭に付与）するシンプルな CUI ツールです.
 
 ## 特長
 
@@ -10,7 +10,7 @@
 ## Usage
 
 ```sh
-echo "Hello,\nThis is a test." | qline
+echo "Hello,\nThis is a test." | quote
 ```
 
 出力:
@@ -23,7 +23,7 @@ echo "Hello,\nThis is a test." | qline
 またはファイルから:
 
 ```sh
-qline input.txt
+quote input.txt
 ```
 
 ## License
